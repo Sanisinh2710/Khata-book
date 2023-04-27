@@ -8,6 +8,7 @@ const Register = () => {
     let date = new Date();
     let year = date.getFullYear();
 
+
     const values = {
         tdate: "",
         monthYear: "",
@@ -19,7 +20,7 @@ const Register = () => {
     };
     const [foValues, setfoValues] = useState(values);
     const [foerror, setfoerror] = useState({});
-    const [issubmit,setIssubmit] = useState(false);
+    const [issubmit, setIssubmit] = useState(false);
 
 
 
@@ -39,13 +40,14 @@ const Register = () => {
                     setfoValues({ ...foValues, receipt: val })
                 })
             }
-        } else {
+        }
+        else {
 
             console.log(e.target.type);
             setfoValues({ ...foValues, [name]: value });
         }
     };
-    
+
     const validation = (values) => {
         const errors = {};
         if (!values.tdate) {
@@ -63,8 +65,7 @@ const Register = () => {
         if (!values.toAccount) {
             errors.toAccount = "Please select Acoount";
         }
-        if((values.fromAccount === values.toAccount) && (values.fromAccount.length > 0) && (values.toAccount.length > 0)) 
-        {
+        if ((values.fromAccount === values.toAccount) && (values.fromAccount.length > 0) && (values.toAccount.length > 0)) {
             errors.same = "From Account and to Account must be different ";
         }
 
@@ -92,11 +93,11 @@ const Register = () => {
                 retrivedata.push(foValues)
 
                 localStorage.setItem('fovalues', JSON.stringify(retrivedata))
-               
+
             } else {
 
                 localStorage.setItem('fovalues', JSON.stringify([foValues]))
-                
+
             }
             navigate('/view-data');
         }
@@ -104,7 +105,7 @@ const Register = () => {
 
     };
 
-   
+
 
     return (
         <>
@@ -128,7 +129,7 @@ const Register = () => {
                             <option value={`Jan ${year}`}>Jan {year}</option>
                             <option value={`Feb ${year}`}>Feb {year}</option>
                             <option value={`Mar ${year}`}>Mar {year}</option>
-                            <option value={`Arp ${year}`}>Arp {year}</option>
+                            <option value={`Apr ${year}`}>Apr {year}</option>
                             <option value={`May ${year}`}>May {year}</option>
                             <option value={`Jun ${year}`}>Jun {year}</option>
                             <option value={`Jul ${year}`}>Jul {year}</option>
@@ -146,7 +147,7 @@ const Register = () => {
                             type="number"
                             name="amount"
                             placeholder="Enter your amount"
-                            value={foValues.amount}
+                            value={foValues.amount.toLocaleString("en-US")}
                             onChange={getvalues}
                         />
                         <p className="error">{foerror.amount}</p>
