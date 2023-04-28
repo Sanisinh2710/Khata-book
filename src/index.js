@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+
 import reportWebVitals from './reportWebVitals';
 import Register from './pages/add_update/addUpdate';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ViewData from './pages/viewData/ViewData';
+import Pdata from './pages/viewData/User';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
@@ -15,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: '/view-data',
     element: <ViewData />
+  }, 
+  {
+    path: '/view-data/:id',
+    element: <Pdata />
   }
 ])
 

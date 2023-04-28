@@ -13,6 +13,10 @@
     color: red;
 }
 
+nav{
+    align-content: center;
+    margin-top: 20px;
+}
 
 .button-30 {
   align-items: center;

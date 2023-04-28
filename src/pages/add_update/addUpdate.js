@@ -28,6 +28,7 @@ const Register = () => {
     const getvalues = (e) => {
         const { name, value } = e.target;
         if (e.target.type === "file") {
+            if(e.target.files[0]){
             if (e.target.files[0].size > "100000") {
                 alert("File size is too large");
             } else {
@@ -39,7 +40,7 @@ const Register = () => {
                     let val = this.result
                     setfoValues({ ...foValues, receipt: val })
                 })
-            }
+            }}
         }
         else {
 
@@ -69,7 +70,7 @@ const Register = () => {
             errors.same = "From Account and to Account must be different ";
         }
 
-        if (!values.remarks) {
+        if (values.remarks.trim() === "") {
             errors.remarks = "Write a remarks";
         } else if (values.remarks.length > 250) {
             errors.remarks = " remarks  too long";
@@ -212,7 +213,7 @@ const Register = () => {
                 </form>
 
                 <div>
-                    <Link class="button-30" to={'/view-data'}>View Transection</Link>
+                    <Link class="button-30" to={`/view-data`}>View Transection</Link>
                 </div>
             </div>
         </>
