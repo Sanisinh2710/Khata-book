@@ -10,6 +10,7 @@ const ViewData = () => {
     const months = [`Jan ${year}`, `Feb ${year}`, `Mar ${year}`, `Apr ${year}`, `May ${year}`, `Jun ${year}`, `Jul ${year}`, `Aug ${year}`, `Sep ${year}`, `Oct ${year}`, `Nov ${year}`, `Dec ${year}`]
 
     const retrivedata = JSON.parse(localStorage.getItem('fovalues'))
+    
     const [sortedField, setSortedField] = useState({});
     const [groupBy, setgroupBy] = useState([]);
     let sortedData = [...retrivedata]
@@ -27,6 +28,7 @@ const ViewData = () => {
 
     if (sortedField.direction === "normal") {
         sortedData = records;
+        
     }
     else if (sortedField.key === "amount") {
         if (sortedField.direction === 'ascending') {
@@ -116,7 +118,7 @@ const ViewData = () => {
         console.log(gdata);
     }
 
-   
+
 
 
     function prePage() {
@@ -193,41 +195,41 @@ const ViewData = () => {
                 }
             </table>
             <nav>
-        <ul className="pagination">
-          <li className="">
-            <span
-              className="page-link"
-              onClick={prePage}
-              style={{ cursor: "pointer" }}
-            >
-              Prev
-            </span>
-          </li>
-          {numbers.map((n, index) => (
-            <li
-              className={`page-item ${currentPage === n ? "active" : ""}`}
-              key={index}
-            >
-              <span
-                className="page-link"
-                onClick={() => changeCurrentPage(n)}
-                style={{ cursor: "pointer" }}
-              >
-                {n}
-              </span>
-            </li>
-          ))}
-          <li className="page-item">
-            <span
-              className="page-link"
-              onClick={NextPage}
-              style={{ cursor: "pointer" }}
-            >
-              Next
-            </span>
-          </li>
-        </ul>
-      </nav>
+                <ul className="pagination">
+                    <li className="">
+                        <span
+                            className="page-link"   
+                            onClick={prePage}
+                            style={{ cursor: "pointer" }}
+                        >
+                            Prev
+                        </span>
+                    </li>
+                    {numbers.map((n, index) => (
+                        <li
+                            className={`page-item ${currentPage === n ? "active" : ""}`}
+                            key={index}
+                        >
+                            <span
+                                className="page-link"
+                                onClick={() => changeCurrentPage(n)}
+                                style={{ cursor: "pointer" }}
+                            >
+                                {n}
+                            </span>
+                        </li>
+                    ))}
+                    <li className="page-item">
+                        <span
+                            className="page-link"
+                            onClick={NextPage}
+                            style={{ cursor: "pointer" }}
+                        >
+                            Next
+                        </span>
+                    </li>
+                </ul>
+            </nav>
             <br></br>
             <div>
                 <Link class="button-30" to={'/'}>New Transection</Link>

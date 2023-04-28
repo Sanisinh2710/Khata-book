@@ -31,6 +31,7 @@ const Register = () => {
             if(e.target.files[0]){
             if (e.target.files[0].size > "100000") {
                 alert("File size is too large");
+                
             } else {
                 let freader = new FileReader();
                 freader.readAsDataURL(e.target.files[0]);
