@@ -15,6 +15,10 @@ const router = createBrowserRouter([
     element: <Register />
   },
   {
+    path: '/:id',
+    element: <Register />
+  },
+  {
     path: '/view-data',
     element: <ViewData />
   }, 

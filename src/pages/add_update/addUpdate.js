@@ -1,23 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./css/form.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const Register = () => {
+
     const navigate = useNavigate();
+
+
+    const { id } = useParams();
+    console.log(id);
+
+    const getdata = JSON.parse(localStorage.getItem('fovalues'))
+
+
+
+
 
     let date = new Date();
     let year = date.getFullYear();
-
-
     const values = {
         tdate: "",
         monthYear: "",
+        ttype: "",
         amount: "",
         fromAccount: "",
         toAccount: "",
         receipt: "",
         remarks: "",
     };
+
+
     const [foValues, setfoValues] = useState(values);
     const [foerror, setfoerror] = useState({});
     const [issubmit, setIssubmit] = useState(false);
@@ -27,21 +39,25 @@ const Register = () => {
     console.log(foValues);
     const getvalues = (e) => {
         const { name, value } = e.target;
-        if (e.target.type === "file") {
-            if(e.target.files[0]){
-            if (e.target.files[0].size > "100000") {
-                alert("File size is too large");
-                
-            } else {
-                let freader = new FileReader();
-                freader.readAsDataURL(e.target.files[0]);
-                console.log(freader)
-                freader.addEventListener('load', function () {
 
-                    let val = this.result
-                    setfoValues({ ...foValues, receipt: val })
-                })
-            }}
+
+
+        if (e.target.type === "file") {
+            if (e.target.files[0]) {
+                if (e.target.files[0].size >= "100000") {
+                    alert("File size is too large");
+
+                } else {
+                    let freader = new FileReader();
+                    freader.readAsDataURL(e.target.files[0]);
+                    console.log(freader)
+                    freader.addEventListener('load', function () {
+
+                        let val = this.result
+                        setfoValues({ ...foValues, receipt: val })
+                    })
+                }
+            }
         }
         else {
 
@@ -58,6 +74,9 @@ const Register = () => {
         if (!values.monthYear) {
             errors.monthYear = "Select a month and year";
         }
+        if (!values.ttype) {
+            errors.ttype = "Select Transection type";
+        }
         if (!values.amount) {
             errors.amount = "Enter your Amount";
         }
@@ -69,6 +88,10 @@ const Register = () => {
         }
         if ((values.fromAccount === values.toAccount) && (values.fromAccount.length > 0) && (values.toAccount.length > 0)) {
             errors.same = "From Account and to Account must be different ";
+        }
+
+        if (!values.receipt) {
+            errors.receipt = "Please choose a transaction Receipt and a transaction Receipt must be less than or equal to 1 mb";
         }
 
         if (values.remarks.trim() === "") {
@@ -86,34 +109,68 @@ const Register = () => {
         setfoerror(validation(foValues));
         setIssubmit(true)
 
-        console.log(Object.keys(foerror).length)
+        
+
+
+    };
+
+    useEffect(() => {
+        for (const key in getdata) {
+            if (parseInt(getdata[key].id) === parseInt(id)) {
+                setfoValues(getdata[key])
+                break;
+            }
+        }
+
+    }, [])
+
+    useEffect(() => {
+
         if (Object.keys(foerror).length === 0 && issubmit) {
             if (localStorage.getItem('fovalues') !== null) {
 
+
                 const retrivedata = JSON.parse(localStorage.getItem('fovalues'))
 
-                retrivedata.push(foValues)
+                if (id) {
+                    for (const e in retrivedata) {
+
+                        if (parseInt(retrivedata[e].id) === parseInt(id)) {
+                            console.log(e.id, "kehFWEghwe")
+                            foValues['id'] = id;
+                            retrivedata[e] = foValues;
+                        }
+                    }
+                    console.log(retrivedata, ">>>>>>>>>>>>>>>>>>>");
+                } else {
+                    let previd = retrivedata[retrivedata.length - 1].id;
+
+                    foValues['id'] = previd + 1;
+                    retrivedata.push(foValues)
+                }
+
+
 
                 localStorage.setItem('fovalues', JSON.stringify(retrivedata))
 
             } else {
+
+                foValues['id'] = 1;
 
                 localStorage.setItem('fovalues', JSON.stringify([foValues]))
 
             }
             navigate('/view-data');
         }
-
-
-    };
-
+        //eslint-disable-next-line
+    }, [foerror])
 
 
     return (
         <>
-            <div class="container">
+            <div className="container">
                 <h2>Khata-book</h2>
-                <form class="form" onSubmit={submit}>
+                <form className="form" onSubmit={submit}>
                     <div>
                         <label>Date of your transaction</label>
                         <input
@@ -126,7 +183,7 @@ const Register = () => {
                     </div>
                     <div>
                         <label>Month year</label>
-                        <select name="monthYear" onChange={getvalues}>
+                        <select name="monthYear" onChange={getvalues} value={foValues.monthYear}>
                             <option value={""}>Select Month & Year</option>
                             <option value={`Jan ${year}`}>Jan {year}</option>
                             <option value={`Feb ${year}`}>Feb {year}</option>
@@ -144,6 +201,17 @@ const Register = () => {
                         <p className="error">{foerror.monthYear}</p>
                     </div>
                     <div>
+                        <label>Transection Type</label>
+                        <select name="ttype" onChange={getvalues} value={foValues.ttype}>
+                            <option value={""}>Select Type</option>
+                            <option value={`Home Expense`}>Home Expense</option>
+                            <option value={`Personal  Expense`}>Personal  Expense</option>
+                            <option value={`Income`}>Income</option>
+
+                        </select>
+                        <p className="error">{foerror.ttype}</p>
+                    </div>
+                    <div>
                         <label>Amount</label>
                         <input
                             type="number"
@@ -156,7 +224,7 @@ const Register = () => {
                     </div>
                     <div>
                         <label>From Acoount</label>.
-                        <select name="fromAccount" onChange={getvalues}>
+                        <select name="fromAccount" onChange={getvalues} value={foValues.fromAccount}>
                             <option value={""}>Select Acoount</option>
                             <option value={"Personal Account"}>Personal Account</option>
                             <option value={"Real Living"}>Real Living</option>
@@ -169,7 +237,7 @@ const Register = () => {
                     </div>
                     <div>
                         <label>To Acoount</label>
-                        <select name="toAccount" onChange={getvalues}>
+                        <select name="toAccount" onChange={getvalues} value={foValues.toAccount}>
                             <option value={""}>Select Acoount</option>
                             <option value={"Personal Account"}>Personal Account</option>
                             <option value={"Real Living"}>Real Living</option>
@@ -187,13 +255,19 @@ const Register = () => {
                             <label>Receipt</label>
                         </div>
                         <div>
-                            <input
-                                type="file"
-                                name="receipt"
-                                accept="image/*"
-                                onChange={getvalues}
-                            />
+                            {
+                                foValues.receipt ? <img src={foValues.receipt} width={100} height={100} alt=""/> : <input
+                                    type="file"
+                                    name="receipt"
+                                    accept="image/*"
+                                    onChange={getvalues}
+
+                                />
+                            }
+
+                            <p className="error">{foerror.receipt}</p>
                         </div>
+
                     </div>
                     <div>
                         <div>
@@ -213,8 +287,9 @@ const Register = () => {
                     </div>
                 </form>
 
+
                 <div>
-                    <Link class="button-30" to={`/view-data`}>View Transection</Link>
+                    <Link className="button-30" to={`/view-data`}>View Transection</Link>
                 </div>
             </div>
         </>
