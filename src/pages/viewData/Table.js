@@ -165,8 +165,8 @@ const Table = (props) => {
                             <td>{data.toAccount}</td>
                             <td>{data.remarks}</td>
                             <td><img src={data.receipt} width={50} height={50} alt="" /></td>
-                            <td><Link to={`/${data.id}`}>Edit</Link></td>
-                            <td><Link to={`/view-data/${index}`}>View</Link></td>
+                            <td><Link to={`/transection/${data.id}`}>Edit</Link></td>
+                            <td><Link to={`/view-data/${data.id}`}>View</Link></td>
                         </tr>
                     </tbody>
                 )

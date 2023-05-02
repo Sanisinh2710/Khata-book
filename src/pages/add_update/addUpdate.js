@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import "./css/form.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-const Register = () => {
+const Transection = () => {
 
     const navigate = useNavigate();
 
 
     const { id } = useParams();
-    console.log(id);
 
     const getdata = JSON.parse(localStorage.getItem('fovalues'))
 
@@ -109,10 +108,14 @@ const Register = () => {
         setfoerror(validation(foValues));
         setIssubmit(true)
 
-        
-
 
     };
+
+    const remove = () => {
+        
+        setfoValues({...foValues,receipt:""})
+    }
+
 
     useEffect(() => {
         for (const key in getdata) {
@@ -121,8 +124,10 @@ const Register = () => {
                 break;
             }
         }
-
+        //eslint-disable-next-line
     }, [])
+
+    
 
     useEffect(() => {
 
@@ -141,7 +146,6 @@ const Register = () => {
                             retrivedata[e] = foValues;
                         }
                     }
-                    console.log(retrivedata, ">>>>>>>>>>>>>>>>>>>");
                 } else {
                     let previd = retrivedata[retrivedata.length - 1].id;
 
@@ -256,7 +260,8 @@ const Register = () => {
                         </div>
                         <div>
                             {
-                                foValues.receipt ? <img src={foValues.receipt} width={100} height={100} alt=""/> : <input
+                                foValues.receipt ? <><img src={foValues.receipt} width={100} height={100} alt="" /><i className="fa fa-close" style={{fontSize:40,color:"red"}} onClick={remove}></i> </> : 
+                                <input
                                     type="file"
                                     name="receipt"
                                     accept="image/*"
@@ -296,4 +301,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Transection;

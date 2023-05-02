@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import './viewdata.css'
+import './css/viewdata.css'
 import { useState } from "react";
 import Table from "./Table";
 
@@ -75,7 +75,8 @@ const ViewData = () => {
 
             }
                     <div>
-                        <Link class="button-30" to={'/'}>New Transection</Link>
+                        <Link class="button-30" to={'/transection'}>New Transection</Link>
+                        <Link class="button-30" to={'/transection'}>New Transection</Link>
                     </div>
         </>
 
