@@ -16,14 +16,19 @@ const ViewData = () => {
 
         let gdata = {};
 
-        data.forEach((items) => {
+        if(ele.target.value){
 
-            let item = items[ele.target.value]
-            console.log(items);
-            gdata[item] = gdata[item] ?? [];
-            gdata[item].push(items);
-        })
-        setgroupBy(gdata)
+            data.forEach((items) => {
+    
+                let item = items[ele.target.value]
+                console.log(items);
+                gdata[item] = gdata[item] ?? [];
+                gdata[item].push(items);
+            })
+            setgroupBy(gdata)
+        }else{
+            setgroupBy([])
+        }
         console.log(gdata);
     }
 
@@ -37,7 +42,7 @@ const ViewData = () => {
 
     }
 
-
+console.log( Object.keys(groupBy).length);
     return (
         <>
             {
@@ -58,7 +63,21 @@ const ViewData = () => {
                         </div>
                         
                         <br></br>
-                        <Table records={retrivedata} />
+                        {
+                            groupBy.length === 0 ?<><Table records={retrivedata} />
+                            <br></br></>:Object.keys(groupBy).map((d, i) => (
+                                <>
+                                    {
+                                        d !== 'undefined' ? <>
+                                            <h2> GroupBy: {d}</h2>
+                                            <Table records={groupBy[d]} />
+                                        </> : null
+                                    }
+
+                                </>
+                            ))
+                        }
+                        {/* <Table records={retrivedata} />
                         <br></br>
 
                         <br></br>
@@ -76,7 +95,7 @@ const ViewData = () => {
 
                                 </>
                             ))
-                        }
+                        } */}
 
 
                     </>

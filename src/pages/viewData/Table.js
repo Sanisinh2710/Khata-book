@@ -11,7 +11,6 @@ const Table = (props) => {
     const [data, setData] = useState(records)
     const [sortedField, setSortedField] = useState({});
 
-
     useEffect(() => {
         if (sortedField.direction === "normal") {
 
@@ -81,7 +80,6 @@ const Table = (props) => {
                 }
                 return 0
             });
-
             setData(datanew)
 
         }
@@ -139,10 +137,12 @@ const Table = (props) => {
 
 
         if (e.target.value === "") {
+            
             setData(records)
         } else {
-
-
+           
+           
+            
             const temp = data.filter((i) => i.tdate.toLowerCase().includes(e.target.value.toLowerCase()) ||
                 i.ttype.toLowerCase().includes(e.target.value.toLowerCase()) || i.monthYear.toLowerCase().includes(e.target.value.toLowerCase()) ||
                 i.amount.toLowerCase().includes(e.target.value.toLowerCase()) || i.fromAccount.toLowerCase().includes(e.target.value.toLowerCase()) ||
@@ -157,7 +157,9 @@ const Table = (props) => {
         <div className="search">
             <input type="text" placeholder="Search.." name="search" onInput={search} />
         </div>
-        <table>
+        {
+            records1.length > 0?<>
+            <table>
             <thead>
                 <tr>
                     <th onClick={() => sort('tdate')}>Transection-date</th>
@@ -230,6 +232,11 @@ const Table = (props) => {
                 </li>
             </ul>
         </nav>
+            
+            </>:<><h1>No data Found</h1></>
+        }
+       
+        
 
     </>
 }
