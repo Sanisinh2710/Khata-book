@@ -45,6 +45,7 @@ const Transection = () => {
             if (e.target.files[0]) {
                 if (e.target.files[0].size >= "100000") {
                     alert("File size is too large");
+                    
 
                 } else {
                     let freader = new FileReader();
@@ -60,7 +61,6 @@ const Transection = () => {
         }
         else {
 
-            console.log(e.target.type);
             setfoValues({ ...foValues, [name]: value });
         }
     };
@@ -266,6 +266,7 @@ const Transection = () => {
                                     name="receipt"
                                     accept="image/*"
                                     onChange={getvalues}
+                                    value={foValues.receipt}
 
                                 />
                             }

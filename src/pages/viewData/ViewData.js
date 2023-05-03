@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './css/viewdata.css'
 import { useState } from "react";
 import Table from "./Table";
 
 
 const ViewData = () => {
-
+    const navigate = useNavigate();
 
     const retrivedata = JSON.parse(localStorage.getItem('fovalues'))
 
@@ -27,6 +27,19 @@ const ViewData = () => {
         console.log(gdata);
     }
 
+    const search = (e) =>{
+        
+    }
+
+    const logout = () =>{
+
+        localStorage.removeItem('tempdata');
+
+        navigate('/public/login');
+
+    }
+
+
     return (
         <>
             {
@@ -44,6 +57,9 @@ const ViewData = () => {
                                 <option value={"toAccount"}>To-Account</option>
                                 <option value={"remarks"}>Remarks</option>
                             </select>
+                        </div>
+                        <div className="search">
+                        <input type="text" placeholder="Search.." name="search" onInput={search}/>
                         </div>
                         <br></br>
                         <Table records={retrivedata} />
@@ -75,8 +91,8 @@ const ViewData = () => {
 
             }
                     <div>
-                        <Link class="button-30" to={'/transection'}>New Transection</Link>
-                        <Link class="button-30" to={'/transection'}>New Transection</Link>
+                        <Link className="button-30" to={'/transection'}>New Transection</Link>
+                        <button className="button-30" onClick={logout}>Logout</button>
                     </div>
         </>
 

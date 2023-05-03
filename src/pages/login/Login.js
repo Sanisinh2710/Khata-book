@@ -22,8 +22,8 @@ const Login = () => {
         setfoValues({ ...foValues, [name]: value });
 
 
-        console.log(foValues);
     }
+    console.log(foValues);
 
     const validation = (values) => {
         const errors = {};
@@ -34,15 +34,16 @@ const Login = () => {
         }
         if (!values.password) {
             errors.password = "Enter a password";
-        }else{
-
-            for (const key in data) {
-                if ((data[key].email !== foValues.email) || (data[key].password !== foValues.password)){
-                    errors.nexist =  "Please type  your email address and password correctly"
-                }
-                
-            }
         }
+
+        // for (const key in data) {
+            
+        //     if ((data[key].email !== foValues.email) && (data[key].password !== foValues.password)) {
+        //         errors.nexist = "Please type  your email address and password correctly"
+        //     }
+
+        // }
+
 
 
         return errors;
@@ -59,13 +60,15 @@ const Login = () => {
 
     useEffect(() => {
         if (Object.keys(foerror).length === 0 && issubmit) {
-            let flag  = false
+            let flag = false
             for (const key in data) {
                 if ((data[key].email === foValues.email) && (data[key].password === foValues.password)) {
 
                     flag = true
                     break;
-                   
+
+                }else{
+                    alert("Please type your email address and password correctly")
                 }
             }
             if (flag === true) {
@@ -82,7 +85,7 @@ const Login = () => {
 
                 localStorage.setItem('tempdata', JSON.stringify(foValues))
 
-                navigate('/transection')
+                navigate('/view-data')
             }
         }
         //eslint-disable-next-line
@@ -107,7 +110,7 @@ const Login = () => {
                     <p>{foerror.nexist}</p>
                 </div>
                 <div className="action">
-                    <Link to={'/register'} className="but">Register</Link>
+                    <Link to={'/public/register'} className="but">Register</Link>
                     <input type="submit" value={"Sign in"} className="but" />
                 </div>
             </form>

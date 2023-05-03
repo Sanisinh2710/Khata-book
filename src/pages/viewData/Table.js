@@ -114,7 +114,7 @@ const Table = (props) => {
 
     function prePage() {
 
-        if (currentPage !== firstIndex) {
+        if (currentPage !== 1) {
             setCurrentPage(currentPage - 1)
 
         }
@@ -136,7 +136,7 @@ const Table = (props) => {
 
 
     return <>
-        <table>
+        <table >
             <thead>
                 <tr>
                     <th onClick={() => sort('tdate')}>Transection-date</th>
@@ -152,8 +152,8 @@ const Table = (props) => {
             </thead>
             {
                 records1.map((data, index) =>
-                    <tbody>
-                        <tr key={index}>
+                    <tbody key={index}>
+                        <tr >
                             <td>{data.tdate}</td>
                             <td>{data.ttype}</td>
                             <td>{data.monthYear}</td>
@@ -173,10 +173,11 @@ const Table = (props) => {
             }
         </table>
         <nav>
+           
             <ul className="pagination">
                 <li className="">
                     <span
-                        className="page-link"
+                        className={`page-link ${currentPage === 1 ? "disable" : ""}`}
                         onClick={prePage}
                         style={{ cursor: "pointer" }}
                     >
@@ -199,7 +200,7 @@ const Table = (props) => {
                 ))}
                 <li className="page-item">
                     <span
-                        className="page-link"
+                        className={`page-link ${currentPage === totalPages? "disable" : ""}`}
                         onClick={NextPage}
                         style={{ cursor: "pointer" }}
                     >

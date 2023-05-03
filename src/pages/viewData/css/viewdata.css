@@ -1,6 +1,7 @@
 table {
     width: 100%;
     border: 3px solid purple;
+    margin-top: 20px;
 }
 
 tr{
@@ -29,4 +30,14 @@ th{
     color: #fff;
     background-color: #800080;
     border-color: #800080;
+}
+
+.disable{
+    pointer-events: null;
+    opacity: 0;
+    
+}
+
+.search{
+    float: right;
 }
