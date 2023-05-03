@@ -134,9 +134,29 @@ const Table = (props) => {
         }
     }
 
+    const search = (e) => {
+
+
+        if (e.target.value === "") {
+            setData(records)
+        } else {
+
+  
+            const temp = data.filter((i) => i.tdate.toLowerCase().includes(e.target.value.toLowerCase()) ||
+                i.ttype.toLowerCase().includes(e.target.value.toLowerCase()) || i.monthYear.toLowerCase().includes(e.target.value.toLowerCase()) ||
+                i.amount.toLowerCase().includes(e.target.value.toLowerCase())||i.fromAccount.toLowerCase().includes(e.target.value.toLowerCase())||
+                i.toAccount.toLowerCase().includes(e.target.value.toLowerCase())||i.remarks.toLowerCase().includes(e.target.value.toLowerCase())
+            )
+            setData(temp)
+        }
+    }
+
 
     return <>
-        <table >
+        <div className="search">
+            <input type="text" placeholder="Search.." name="search" onInput={search} />
+        </div>
+        <table>
             <thead>
                 <tr>
                     <th onClick={() => sort('tdate')}>Transection-date</th>
@@ -173,7 +193,7 @@ const Table = (props) => {
             }
         </table>
         <nav>
-           
+
             <ul className="pagination">
                 <li className="">
                     <span
@@ -200,7 +220,7 @@ const Table = (props) => {
                 ))}
                 <li className="page-item">
                     <span
-                        className={`page-link ${currentPage === totalPages? "disable" : ""}`}
+                        className={`page-link ${currentPage === totalPages ? "disable" : ""}`}
                         onClick={NextPage}
                         style={{ cursor: "pointer" }}
                     >

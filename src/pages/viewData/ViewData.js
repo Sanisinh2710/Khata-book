@@ -27,9 +27,7 @@ const ViewData = () => {
         console.log(gdata);
     }
 
-    const search = (e) =>{
-        
-    }
+
 
     const logout = () =>{
 
@@ -58,9 +56,7 @@ const ViewData = () => {
                                 <option value={"remarks"}>Remarks</option>
                             </select>
                         </div>
-                        <div className="search">
-                        <input type="text" placeholder="Search.." name="search" onInput={search}/>
-                        </div>
+                        
                         <br></br>
                         <Table records={retrivedata} />
                         <br></br>
