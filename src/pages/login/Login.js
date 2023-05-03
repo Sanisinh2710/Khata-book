@@ -36,16 +36,6 @@ const Login = () => {
             errors.password = "Enter a password";
         }
 
-        // for (const key in data) {
-            
-        //     if ((data[key].email !== foValues.email) && (data[key].password !== foValues.password)) {
-        //         errors.nexist = "Please type  your email address and password correctly"
-        //     }
-
-        // }
-
-
-
         return errors;
     }
 

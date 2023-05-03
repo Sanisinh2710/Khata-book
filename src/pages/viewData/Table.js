@@ -90,6 +90,7 @@ const Table = (props) => {
 
     const sort = key => {
 
+        setCurrentPage(1)
         let direction = 'ascending';
 
         if (sortedField.key === key && sortedField.direction === 'ascending') {
@@ -141,11 +142,11 @@ const Table = (props) => {
             setData(records)
         } else {
 
-  
+
             const temp = data.filter((i) => i.tdate.toLowerCase().includes(e.target.value.toLowerCase()) ||
                 i.ttype.toLowerCase().includes(e.target.value.toLowerCase()) || i.monthYear.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                i.amount.toLowerCase().includes(e.target.value.toLowerCase())||i.fromAccount.toLowerCase().includes(e.target.value.toLowerCase())||
-                i.toAccount.toLowerCase().includes(e.target.value.toLowerCase())||i.remarks.toLowerCase().includes(e.target.value.toLowerCase())
+                i.amount.toLowerCase().includes(e.target.value.toLowerCase()) || i.fromAccount.toLowerCase().includes(e.target.value.toLowerCase()) ||
+                i.toAccount.toLowerCase().includes(e.target.value.toLowerCase()) || i.remarks.toLowerCase().includes(e.target.value.toLowerCase())
             )
             setData(temp)
         }

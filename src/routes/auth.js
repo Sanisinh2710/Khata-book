@@ -15,7 +15,7 @@ const Auth = ()=>{
     if (!token) {
       navigate("/public/login");
     }
-
+    //eslint-disable-next-line
   }, []);
 
     return(

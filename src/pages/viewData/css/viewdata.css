@@ -33,7 +33,8 @@ th{
 }
 
 .disable{
-    pointer-events: null;
+
+    pointer-events: none;
     opacity: 0;
     
 }

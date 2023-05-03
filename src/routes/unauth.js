@@ -15,6 +15,7 @@ const Unauth = () => {
         if (token) {
             navigate("/view-data");
         }   
+                //eslint-disable-next-line
     }, []);
     return (
         <>
