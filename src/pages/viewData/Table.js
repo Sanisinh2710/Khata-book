@@ -135,20 +135,20 @@ const Table = (props) => {
 
     const search = (e) => {
 
-
+        
         if (e.target.value === "") {
             
             setData(records)
         } else {
            
-           
             
-            const temp = data.filter((i) => i.tdate.toLowerCase().includes(e.target.value.toLowerCase()) ||
+            
+            let temp1 = records.filter((i) => i.tdate.toLowerCase().includes(e.target.value.toLowerCase()) ||
                 i.ttype.toLowerCase().includes(e.target.value.toLowerCase()) || i.monthYear.toLowerCase().includes(e.target.value.toLowerCase()) ||
                 i.amount.toLowerCase().includes(e.target.value.toLowerCase()) || i.fromAccount.toLowerCase().includes(e.target.value.toLowerCase()) ||
                 i.toAccount.toLowerCase().includes(e.target.value.toLowerCase()) || i.remarks.toLowerCase().includes(e.target.value.toLowerCase())
-            )
-            setData(temp)
+                )
+                setData(temp1)
         }
     }
 
