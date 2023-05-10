@@ -1,6 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './login.css'
 import { useEffect, useState } from 'react';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from "react-hook-form";
+
 
 const Login = () => {
     const navigate = useNavigate();
@@ -13,43 +17,20 @@ const Login = () => {
     console.log(data);
 
     const [foValues, setfoValues] = useState(values);
-    const [foerror, setfoerror] = useState({});
     const [issubmit, setIssubmit] = useState(false);
 
-    const getvalues = (e) => {
 
-        const { name, value } = e.target
-        setfoValues({ ...foValues, [name]: value });
+    const schema = yup.object().shape({
+        email: yup.string().required('Please enter your Name'),
+        password: yup.string().required('Please enter your Password')
+    })
 
-
-    }
-    console.log(foValues);
-
-    const validation = (values) => {
-        const errors = {};
-
-
-        if (!values.email) {
-            errors.email = "Enter a valid email address";
-        }
-        if (!values.password) {
-            errors.password = "Enter a password";
-        }
-
-        return errors;
-    }
-
-    const submit = (e) => {
-        e.preventDefault();
-        setfoerror(validation(foValues));
-        setIssubmit(true)
-    }
-
-    console.log(Object.keys(foerror).length);
-    console.log(issubmit);
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema)
+    });
 
     useEffect(() => {
-        if (Object.keys(foerror).length === 0 && issubmit) {
+        if (issubmit) {
             let flag = false
             for (const key in data) {
                 if ((data[key].email === foValues.email) && (data[key].password === foValues.password)) {
@@ -79,25 +60,29 @@ const Login = () => {
             }
         }
         //eslint-disable-next-line
-    }, [foerror])
+    }, [issubmit])
 
+    const onSubmit = async (data) => {
 
+        setIssubmit(true)
+
+        setfoValues(data)
+    }
 
     return <>
         <div className="login-form">
-            <form onSubmit={submit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Login</h1>
                 <div className="content">
                     <div className="input-field">
-                        <input type="email" placeholder="Email" name='email' onChange={getvalues} />
-                        <p>{foerror.email}</p>
+                        <input type="email" placeholder="Email" name='email' {...register('email')} />
+                        <p className='error'>{errors.email?.message}</p>
                     </div>
                     <div className="input-field">
-                        <input type="password" placeholder="Password" name='password' onChange={getvalues} />
-                        <p>{foerror.password}</p>
+                        <input type="password" placeholder="Password" name='password' {...register('password')} />
+                        <p className='error'>{errors.password?.message}</p>
                     </div>
 
-                    <p>{foerror.nexist}</p>
                 </div>
                 <div className="action">
                     <Link to={'/public/register'} className="but">Register</Link>

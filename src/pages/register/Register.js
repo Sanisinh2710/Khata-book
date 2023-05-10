@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from "react-hook-form";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -12,44 +15,32 @@ const Register = () => {
 
 
     const [foValues, setfoValues] = useState(values);
-    const [foerror, setfoerror] = useState({});
     const [issubmit, setIssubmit] = useState(false);
 
 
 
-    const getvalues = (e) => {
+    const schema = yup.object().shape({
+        uname: yup.string().required('Please enter your Name'),
+        email: yup.string().required('Please enter your Name'),
+        password: yup.string().min(4).required('Please enter your Password')
+    })
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema)
+    });
 
-        const { name, value } = e.target
-        setfoValues({ ...foValues, [name]: value });
 
-    }
-    console.log(foValues);
 
-    const validation = (values) => {
-        const errors = {};
 
-        if (!values.uname) {
-            errors.uname = "Enter your name";
-        }
-        if (!values.email) {
-            errors.email = "Enter a valid email address";
-        }
-        if (!values.password) {
-            errors.password = "Enter a password";
-        }
+    const onSubmit = async (data) => {
 
-        return errors;
-    }
-
-    const submit = (e) => {
-        e.preventDefault();
-        setfoerror(validation(foValues));
         setIssubmit(true)
+
+        setfoValues(data)
     }
 
 
     useEffect(() => {
-        if (Object.keys(foerror).length === 0 && issubmit) {
+        if (issubmit) {
             const retrivedata = JSON.parse(localStorage.getItem('userdata'))
 
             if (localStorage.getItem('userdata') !== null) {
@@ -70,25 +61,27 @@ const Register = () => {
             navigate('/login')
         }
         //eslint-disable-next-line
-    }, [foerror])
+    }, [issubmit])
 
 
     return <>
         <div className="login-form">
-            <form onSubmit={submit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Register</h1>
                 <div className="content">
                     <div className="input-field">
-                        <input type="text" name="uname" placeholder="Name" value={foValues.uname} onChange={getvalues} />
-                        <p>{foerror.name}</p>
+                        <input type="text" name="uname" placeholder="Name" {...register("uname")} />
+                        <p className="error">{errors.uname?.message}</p>
                     </div>
                     <div className="input-field">
-                        <input type="email" name="email" placeholder="Email" value={foValues.email} onChange={getvalues} />
-                        <p>{foerror.email}</p>
+                        <input type="email" name="email" placeholder="Email"  {...register("email")} />
+                        <p className="error">{errors.email?.message}</p>
+                        
+                        
                     </div>
                     <div className="input-field">
-                        <input type="password" name="password" placeholder="Password" value={foValues.password} onChange={getvalues} />
-                        <p>{foerror.password}</p>
+                        <input type="password" name="password" placeholder="Password" {...register("password")} />
+                        <p className="error">{errors.password?.message}</p>
 
                     </div>
                 </div>
