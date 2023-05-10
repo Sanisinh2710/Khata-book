@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom";
+import { UsetransData } from "../../contexts/transection";
 
 
 const Pdata = () => {
 
     const { id } = useParams();
 
-
-    const retrivedata = JSON.parse(localStorage.getItem('fovalues'))
+    const {contextData,setcontextData} = UsetransData()
+    const retrivedata = contextData
 
     const [d , setdata] = useState([])
 

@@ -4,6 +4,9 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { UsetransData } from "../../contexts/transection";
+
+
 
 const Transection = () => {
 
@@ -12,8 +15,7 @@ const Transection = () => {
 
     const { id } = useParams();
 
-    const getdata = JSON.parse(localStorage.getItem('fovalues'))
-
+    
     const schema = yup.object().shape({
         tdate: yup.string().required('Please enter Transection Date'),
         monthYear: yup.string().required('PLease enter month Year'),
@@ -25,17 +27,20 @@ const Transection = () => {
             if (receipt.length > 0) return true;
             return false;
         }).test("fileSize", "The file is too large", (value) => {
-            if (!value.length) return true
-            return value[0].size <= 1000000
-        }),
+            if (typeof value === 'string' ){
+                return true
+            } 
+            else{
+                return value[0] && value[0].size <= 1000000
+    }}),
 
         remarks: yup.string().required('Please enter your notes'),
 
     })
 
 
-
-
+    
+    
     let date = new Date();
     let year = date.getFullYear();
     const values = {
@@ -48,9 +53,14 @@ const Transection = () => {
         receipt: "",
         remarks: "",
     };
+    
+    const {contextData,setcontextData} = UsetransData()
+    console.log(contextData);
 
+    const getdata = contextData
 
     const [foValues, setfoValues] = useState(values);
+    console.log(foValues);
 
 
     useEffect(() => {
@@ -66,7 +76,7 @@ const Transection = () => {
     let dummy = getdata.filter((value) =>{
             return parseInt(value.id) === parseInt(id)
         });
-
+        console.log(dummy);
 
 
     const { register, handleSubmit, setValue, formState: { errors } } = useForm({
@@ -170,6 +180,7 @@ const Transection = () => {
         await new Promise(resolve => reader.onload = () => resolve())
         return reader.result
     }
+    
     const onSubmit = async (data) => {
 
         if (typeof (data.receipt) !== "string") {
@@ -188,10 +199,11 @@ const Transection = () => {
     useEffect(() => {
 
         if (issubmit) {
-            if (localStorage.getItem('fovalues') !== null) {
+            let retrivedata = contextData
+            if (retrivedata !== null) {
 
 
-                const retrivedata = JSON.parse(localStorage.getItem('fovalues'))
+                // const retrivedata = JSON.parse(localStorage.getItem('fovalues'))
 
                 if (id) {
                     for (const e in retrivedata) {
@@ -210,14 +222,14 @@ const Transection = () => {
                 }
 
 
-
-                localStorage.setItem('fovalues', JSON.stringify(retrivedata))
+                setcontextData(retrivedata)
+                // localStorage.setItem('fovalues', JSON.stringify(retrivedata))
 
             } else {
 
                 foValues['id'] = 1;
-
-                localStorage.setItem('fovalues', JSON.stringify([foValues]))
+                setcontextData(retrivedata)
+                // localStorage.setItem('fovalues', JSON.stringify([foValues]))
 
             }
             navigate('/view-data');
@@ -334,13 +346,15 @@ const Transection = () => {
                                         type="file"
                                         name="receipt"
                                         accept="image/*"
-                                        {...register("receipt", {
+                                        {...register("receipt",
+                                        {
                                             onChange: async (e) => {
                                                 let file = await bs(e.target.files[0])
 
                                                 setfoValues({ ...foValues, receipt: file })
                                             }
-                                        })}
+                                        }
+                                        )}
                                     // value={foValues.receipt}
 
                                     />
