@@ -1,36 +1,60 @@
 import { Link, useNavigate } from "react-router-dom";
 import './css/viewdata.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "./Table";
 import { UsetransData } from "../../contexts/transection";
 
 const ViewData = () => {
     const navigate = useNavigate();
 
-    
-    const {contextData,setcontextData} = UsetransData()
+
+    const { contextData, setcontextData } = UsetransData()
     const retrivedata = contextData
-    
     const [groupBy, setgroupBy] = useState([]);
+    const [gval, setgval] = useState("")
+
+    useEffect(() => {
+        setcontextData(contextData);
+    }, [contextData]);
+
+    useEffect(() => {
+        value(gval)
+    }, [contextData]);
+
+
     const value = (ele) => {
+
         let data = [...retrivedata];
 
         let gdata = {};
 
-        if (ele.target.value) {
-
-            data.forEach((items) => {
-
-                let item = items[ele.target.value]
-                console.log(items);
-                gdata[item] = gdata[item] ?? [];
-                gdata[item].push(items);
-            })
-            setgroupBy(gdata)
-        } else {
-            setgroupBy([])
+        if (ele.target) {
+            setgval(ele.target.value)
+            if (ele.target.value) {
+                data.forEach((items) => {
+    
+                    let item = items[ele.target.value]
+                    console.log(items);
+                    gdata[item] = gdata[item] ?? [];
+                    gdata[item].push(items);
+                })
+                setgroupBy(gdata)
+            } else { 
+                setgroupBy([])
+            }
         }
-        console.log(gdata);
+        else{
+            if (ele) {
+                data.forEach((items) => {
+    
+                    let item = items[ele]
+                    console.log(items);
+                    gdata[item] = gdata[item] ?? [];
+                    gdata[item].push(items);
+                })
+                setgroupBy(gdata)
+            }
+        }
     }
 
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { UsetransData } from "../../contexts/transection";
 
 let date = new Date();
 let year = date.getFullYear();
@@ -8,10 +9,15 @@ const months = [`Jan ${year}`, `Feb ${year}`, `Mar ${year}`, `Apr ${year}`, `May
 const Table = (props) => {
 
     const records = props.records;
+    const { contextData, setcontextData } = UsetransData()
 
     const [data, setData] = useState(records)
-    console.log(data);
     const [sortedField, setSortedField] = useState({});
+
+
+    useEffect(() => {
+        setData(records)
+    }, [records])
 
     useEffect(() => {
         if (sortedField.direction === "normal") {
@@ -56,7 +62,6 @@ const Table = (props) => {
             let datanew = [...data]
 
             if (sortedField.direction === 'ascending') {
-                console.log(months.indexOf('Jan 2023'));
                 datanew.sort((a, b) => {
 
                     return months.indexOf(a[sortedField.key]) - months.indexOf(b[sortedField.key])
@@ -143,8 +148,6 @@ const Table = (props) => {
             setData(records)
         } else {
 
-
-
             let temp1 = records.filter((i) =>
                 i.tdate.toLowerCase().includes(e.target.value.toLowerCase()) || i.ttype.toLowerCase().includes(e.target.value.toLowerCase())
                 || i.monthYear.toLowerCase().includes(e.target.value.toLowerCase()) || i.amount.toString().toLowerCase().includes(e.target.value.toString().toLowerCase())
@@ -156,15 +159,25 @@ const Table = (props) => {
         }
     }
 
-    function drop(arr, id) {
-        // Making a copy with the Array from() method
-        const arrCopy = Array.from(arr);
+    // function drop(arr, id) {
+    //     // Making a copy with the Array from() method
+    //     const arrCopy = Array.from(arr);
 
-        const objWithIdIndex = arrCopy.findIndex((obj) => obj.id === id);
-        arrCopy.splice(objWithIdIndex, 1);
-        setData(arrCopy)
-        return arrCopy;
-    }
+    //     const objWithIdIndex = arrCopy.findIndex((obj) => obj.id === id);
+    //     arrCopy.splice(objWithIdIndex, 1);
+    //     setData(arrCopy)
+    //     return arrCopy;
+    // }
+
+    const deleteData = (id) => {
+        // differ();
+        console.log(id,">");
+        const deleteData = [...contextData];
+        const deletedData = deleteData.filter((value) => parseInt(value.id) !== parseInt(id));
+        console.log(deletedData, ">>>>>>>>");
+        setcontextData(deletedData);
+        // setCurrentPage(1);
+    };
 
     return <>
         <div className="search">
@@ -203,7 +216,7 @@ const Table = (props) => {
                                     <td><img src={data.receipt} width={50} height={50} alt="" /></td>
                                     <td><Link to={`/transection/${data.id}`}>Edit</Link></td>
                                     <td><Link to={`/view-data/${data.id}`}>View</Link></td>
-                                    <td><i onClick={() => drop(data, data.id)} className="fa fa-trash-o" style={{ fontSize: 25 }}></i></td>
+                                    <td><i onClick={() => deleteData(data.id)} className="fa fa-trash-o" style={{ fontSize: 25 }}></i></td>
                                 </tr>
                             </tbody>
                         )
